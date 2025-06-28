@@ -8,6 +8,8 @@ export const API_CONFIG = {
     modules: {
       list: "/api/v1/admin/modules",
       create: "/api/v1/admin/modules",
+      byId: (id: string) => `/api/v1/admin/modules/${id}`,
+      update: (id: string) => `/api/v1/admin/modules/${id}`,
       delete: (id: string) => `/api/v1/admin/modules/${id}`,
     },
     rentals: {
