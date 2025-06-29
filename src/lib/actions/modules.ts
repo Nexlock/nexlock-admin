@@ -2,7 +2,7 @@
 
 import { cookies } from "next/headers";
 import { API_CONFIG, AUTH_COOKIE_NAME } from "../config/api";
-import type { ModuleResponse } from "../schemas/modules";
+import type { ModuleResponse, ModuleStatus } from "../schemas/modules";
 
 async function makeAuthenticatedRequest<T>(
   endpoint: string,
@@ -83,5 +83,11 @@ export async function updateModuleAction(
       method: "PATCH",
       body: JSON.stringify(data),
     }
+  );
+}
+
+export async function getModuleStatusAction(id: string): Promise<ModuleStatus> {
+  return makeAuthenticatedRequest<ModuleStatus>(
+    `/api/v1/admin/modules/${id}/status`
   );
 }

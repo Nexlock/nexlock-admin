@@ -16,6 +16,8 @@ import {
   X,
   Settings,
   Lock,
+  Wifi,
+  WifiOff,
 } from "lucide-react";
 import { modulesApi } from "@/lib/api/modules";
 import type {
@@ -85,6 +87,21 @@ export function ModuleInfoCard({ module, onUpdate }: ModuleInfoCardProps) {
             <CardTitle className="flex items-center gap-2">
               <Monitor className="w-5 h-5" />
               Module Information
+              <Badge
+                variant={module.isOnline ? "default" : "secondary"}
+                className={`ml-2 gap-1 ${
+                  module.isOnline
+                    ? "bg-green-100 text-green-800 hover:bg-green-100"
+                    : "bg-gray-100 text-gray-600 hover:bg-gray-100"
+                }`}
+              >
+                {module.isOnline ? (
+                  <Wifi className="w-3 h-3" />
+                ) : (
+                  <WifiOff className="w-3 h-3" />
+                )}
+                {module.isOnline ? "Online" : "Offline"}
+              </Badge>
             </CardTitle>
             <p className="text-sm text-muted-foreground">
               Manage module details and configuration

@@ -1,5 +1,9 @@
 import { apiClient } from "./client";
-import type { ModuleResponse } from "../schemas/modules";
+import type {
+  ModuleResponse,
+  UpdateModuleRequest,
+  ModuleStatus,
+} from "../schemas/modules";
 
 export const modulesApi = {
   getModules(token?: string): Promise<ModuleResponse[]> {
@@ -18,6 +22,13 @@ export const modulesApi = {
     return apiClient.put<ModuleResponse>(
       `/api/v1/admin/modules/${id}`,
       data,
+      token
+    );
+  },
+
+  getModuleStatus(moduleId: string, token?: string): Promise<ModuleStatus> {
+    return apiClient.get<ModuleStatus>(
+      `/api/v1/admin/modules/${moduleId}/status`,
       token
     );
   },

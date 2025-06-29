@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { ModuleInfoCard } from "@/components/modules/ModuleInfoCard";
+import { ModuleStatusCard } from "@/components/modules/ModuleStatusCard";
 import type { ModuleResponse } from "@/lib/schemas/modules";
 
 interface ModulePageClientProps {
@@ -17,5 +18,10 @@ export function ModulePageClient({
     setModule(updatedModule);
   };
 
-  return <ModuleInfoCard module={module} onUpdate={handleModuleUpdate} />;
+  return (
+    <div className="space-y-6">
+      <ModuleInfoCard module={module} onUpdate={handleModuleUpdate} />
+      <ModuleStatusCard moduleId={module.id} />
+    </div>
+  );
 }

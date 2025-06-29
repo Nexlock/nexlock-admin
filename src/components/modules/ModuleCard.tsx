@@ -1,7 +1,14 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { MapPin, Monitor, Calendar, ArrowRight } from "lucide-react";
+import {
+  MapPin,
+  Monitor,
+  Calendar,
+  ArrowRight,
+  Wifi,
+  WifiOff,
+} from "lucide-react";
 import Link from "next/link";
 import type { ModuleResponse } from "@/lib/schemas/modules";
 
@@ -15,7 +22,24 @@ export function ModuleCard({ module }: ModuleCardProps) {
   return (
     <Card className="hover:shadow-md transition-shadow">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-lg font-semibold">{module.name}</CardTitle>
+        <div className="flex items-center gap-2">
+          <CardTitle className="text-lg font-semibold">{module.name}</CardTitle>
+          <Badge
+            variant={module.isOnline ? "default" : "secondary"}
+            className={`gap-1 ${
+              module.isOnline
+                ? "bg-green-100 text-green-800 hover:bg-green-100"
+                : "bg-gray-100 text-gray-600 hover:bg-gray-100"
+            }`}
+          >
+            {module.isOnline ? (
+              <Wifi className="w-3 h-3" />
+            ) : (
+              <WifiOff className="w-3 h-3" />
+            )}
+            {module.isOnline ? "Online" : "Offline"}
+          </Badge>
+        </div>
         <Badge variant="secondary" className="flex items-center gap-1">
           <Monitor className="w-3 h-3" />
           {module.deviceId}
