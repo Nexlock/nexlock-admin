@@ -57,17 +57,31 @@ export function RentalHistory({ rentals, loading }: RentalHistoryProps) {
     );
   }
 
-  const formatDuration = (start: Date, end: Date | null) => {
-    if (!end) return "Ongoing";
+  const formatDuration = (start: Date, expiresAt: Date) => {
+    const now = new Date();
+    const isActive = now < expiresAt;
 
-    const diff = end.getTime() - start.getTime();
-    const hours = Math.floor(diff / (1000 * 60 * 60));
-    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    if (isActive) {
+      // Show remaining time for active rentals
+      const diff = expiresAt.getTime() - now.getTime();
+      const hours = Math.floor(diff / (1000 * 60 * 60));
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
 
-    if (hours > 0) {
-      return `${hours}h ${minutes}m`;
+      if (hours > 0) {
+        return `${hours}h ${minutes}m remaining`;
+      }
+      return `${minutes}m remaining`;
+    } else {
+      // Show total duration for expired rentals
+      const diff = expiresAt.getTime() - start.getTime();
+      const hours = Math.floor(diff / (1000 * 60 * 60));
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+
+      if (hours > 0) {
+        return `${hours}h ${minutes}m duration`;
+      }
+      return `${minutes}m duration`;
     }
-    return `${minutes}m`;
   };
 
   return (
@@ -82,9 +96,8 @@ export function RentalHistory({ rentals, loading }: RentalHistoryProps) {
       <CardContent>
         <div className="space-y-4">
           {rentals.map((rental) => {
-            const isActive = !rental.endDate;
-            const isExpired =
-              isActive && new Date(rental.expiresAt) < new Date();
+            const isActive = new Date() < new Date(rental.expiresAt);
+            const isExpired = !isActive;
 
             return (
               <div
@@ -98,20 +111,8 @@ export function RentalHistory({ rentals, loading }: RentalHistoryProps) {
                 <div className="flex-1 space-y-1">
                   <div className="flex items-center justify-between">
                     <span className="font-medium">{rental.user.name}</span>
-                    <Badge
-                      variant={
-                        isActive
-                          ? isExpired
-                            ? "destructive"
-                            : "default"
-                          : "outline"
-                      }
-                    >
-                      {isActive
-                        ? isExpired
-                          ? "Expired"
-                          : "Active"
-                        : "Completed"}
+                    <Badge variant={isActive ? "default" : "outline"}>
+                      {isActive ? "Active" : "Expired"}
                     </Badge>
                   </div>
 
@@ -129,16 +130,15 @@ export function RentalHistory({ rentals, loading }: RentalHistoryProps) {
                       <Clock className="w-3 h-3" />
                       {formatDuration(
                         new Date(rental.startDate),
-                        rental.endDate ? new Date(rental.endDate) : null
+                        new Date(rental.expiresAt)
                       )}
                     </div>
                   </div>
 
-                  {isActive && (
-                    <div className="text-xs">
-                      Expires: {new Date(rental.expiresAt).toLocaleString()}
-                    </div>
-                  )}
+                  <div className="text-xs">
+                    {isActive ? "Expires" : "Expired"}:{" "}
+                    {new Date(rental.expiresAt).toLocaleString()}
+                  </div>
                 </div>
               </div>
             );

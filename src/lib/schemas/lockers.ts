@@ -18,7 +18,6 @@ export const LockerResponseSchema = z.object({
       id: z.string(),
       userId: z.string(),
       startDate: z.date(),
-      endDate: z.date().nullable(),
       expiresAt: z.date(),
       isLocked: z.boolean(),
       user: z.object({
@@ -34,7 +33,6 @@ export const LockerResponseSchema = z.object({
         id: z.string(),
         userId: z.string(),
         startDate: z.date(),
-        endDate: z.date().nullable(),
         expiresAt: z.date(),
         isLocked: z.boolean(),
         user: z.object({

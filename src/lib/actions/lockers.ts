@@ -70,7 +70,6 @@ function transformDates(obj: any): any {
         key === "createdAt" ||
         key === "updatedAt" ||
         key === "startDate" ||
-        key === "endDate" ||
         key === "expiresAt" ||
         key === "lastUpdate"
       ) {
