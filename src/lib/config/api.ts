@@ -4,6 +4,7 @@ export const API_CONFIG = {
     auth: {
       login: "/api/v1/admin/auth/login",
       register: "/api/v1/admin/auth/register",
+      me: "/api/v1/admin/me",
     },
     modules: {
       list: "/api/v1/admin/modules",

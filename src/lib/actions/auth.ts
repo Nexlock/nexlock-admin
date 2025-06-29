@@ -84,7 +84,7 @@ export async function redirectToLogin() {
 }
 
 export async function redirectToDashboard() {
-  redirect("/dashboard");
+  redirect("/");
 }
 
 export async function registerAction(data: RegisterAdminRequest) {
