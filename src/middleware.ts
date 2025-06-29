@@ -26,6 +26,7 @@ export async function middleware(request: NextRequest) {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
+        cache: "no-store", // Ensure fresh validation
       });
 
       // Invalid token, server rejected it
@@ -48,7 +49,19 @@ export async function middleware(request: NextRequest) {
       if (pathname === "/login") {
         return NextResponse.redirect(new URL("/dashboard", request.url));
       }
+
+      // Create response and ensure cookies are preserved
+      const response2 = NextResponse.next();
+      response2.cookies.set(AUTH_COOKIE_NAME, token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+        maxAge: 7 * 24 * 60 * 60, // 7 days
+        path: "/",
+      });
+      return response2;
     } catch (error) {
+      console.error("Middleware auth error:", error);
       // Network error or invalid response, clear token and redirect to login
       const redirectResponse = NextResponse.redirect(
         new URL("/login", request.url)

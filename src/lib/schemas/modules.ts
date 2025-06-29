@@ -3,8 +3,8 @@ import { z } from "zod";
 export const LockerResponseSchema = z.object({
   id: z.string(),
   lockerId: z.string(),
-  createdAt: z.string().transform((val) => new Date(val)),
-  updatedAt: z.string().transform((val) => new Date(val)),
+  createdAt: z.date(),
+  updatedAt: z.date(),
 });
 
 export const ModuleResponseSchema = z.object({
@@ -14,8 +14,8 @@ export const ModuleResponseSchema = z.object({
   description: z.string().nullable(),
   location: z.string().nullable(),
   adminId: z.string().nullable(),
-  createdAt: z.string().transform((val) => new Date(val)),
-  updatedAt: z.string().transform((val) => new Date(val)),
+  createdAt: z.date(),
+  updatedAt: z.date(),
   lockers: z.array(LockerResponseSchema).optional(),
 });
 

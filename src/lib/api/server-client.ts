@@ -1,13 +1,19 @@
-import { API_CONFIG } from "../config/api";
+"use server";
 
-class ApiClient {
+import { cookies } from "next/headers";
+import { API_CONFIG, AUTH_COOKIE_NAME } from "../config/api";
+
+class ServerApiClient {
   private baseUrl: string;
 
   constructor(baseUrl: string = API_CONFIG.baseUrl) {
     this.baseUrl = baseUrl;
   }
 
-  private getAuthHeaders(token?: string): HeadersInit {
+  private async getAuthHeaders(): Promise<HeadersInit> {
+    const cookieStore = await cookies();
+    const token = cookieStore.get(AUTH_COOKIE_NAME)?.value;
+
     const headers: HeadersInit = {
       "Content-Type": "application/json",
     };
@@ -19,13 +25,12 @@ class ApiClient {
     return headers;
   }
 
-  async get<T>(endpoint: string, token?: string): Promise<T> {
-    const headers = this.getAuthHeaders(token);
+  async get<T>(endpoint: string): Promise<T> {
+    const headers = await this.getAuthHeaders();
 
     const response = await fetch(`${this.baseUrl}${endpoint}`, {
       method: "GET",
       headers,
-      credentials: "include",
     });
 
     if (!response.ok) {
@@ -35,14 +40,13 @@ class ApiClient {
     return response.json();
   }
 
-  async post<T>(endpoint: string, data?: any, token?: string): Promise<T> {
-    const headers = this.getAuthHeaders(token);
+  async post<T>(endpoint: string, data?: any): Promise<T> {
+    const headers = await this.getAuthHeaders();
 
     const response = await fetch(`${this.baseUrl}${endpoint}`, {
       method: "POST",
       headers,
       body: data ? JSON.stringify(data) : undefined,
-      credentials: "include",
     });
 
     if (!response.ok) {
@@ -52,14 +56,13 @@ class ApiClient {
     return response.json();
   }
 
-  async put<T>(endpoint: string, data?: any, token?: string): Promise<T> {
-    const headers = this.getAuthHeaders(token);
+  async put<T>(endpoint: string, data?: any): Promise<T> {
+    const headers = await this.getAuthHeaders();
 
     const response = await fetch(`${this.baseUrl}${endpoint}`, {
       method: "PUT",
       headers,
       body: data ? JSON.stringify(data) : undefined,
-      credentials: "include",
     });
 
     if (!response.ok) {
@@ -69,13 +72,12 @@ class ApiClient {
     return response.json();
   }
 
-  async delete<T>(endpoint: string, token?: string): Promise<T> {
-    const headers = this.getAuthHeaders(token);
+  async delete<T>(endpoint: string): Promise<T> {
+    const headers = await this.getAuthHeaders();
 
     const response = await fetch(`${this.baseUrl}${endpoint}`, {
       method: "DELETE",
       headers,
-      credentials: "include",
     });
 
     if (!response.ok) {
@@ -86,4 +88,4 @@ class ApiClient {
   }
 }
 
-export const apiClient = new ApiClient();
+export const serverApiClient = new ServerApiClient();

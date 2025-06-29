@@ -14,7 +14,7 @@ import {
   Eye,
 } from "lucide-react";
 import Link from "next/link";
-import { modulesApi } from "@/lib/api/modules";
+import { getModuleByIdAction } from "@/lib/actions/modules";
 
 const ModuleInfoPage = async ({
   params,
@@ -27,7 +27,7 @@ const ModuleInfoPage = async ({
   let error = null;
 
   try {
-    module = await modulesApi.getModuleById(moduleId);
+    module = await getModuleByIdAction(moduleId);
   } catch (err) {
     error = err instanceof Error ? err.message : "Failed to fetch module";
   }

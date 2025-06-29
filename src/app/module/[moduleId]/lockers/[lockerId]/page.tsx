@@ -4,7 +4,10 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { LockerDetailsClient } from "@/components/lockers/LockerDetailsClient";
 import { ArrowLeft, AlertCircle } from "lucide-react";
 import Link from "next/link";
-import { lockersApi } from "@/lib/api/lockers";
+import {
+  getLockerByIdAction,
+  getLockerStatusesAction,
+} from "@/lib/actions/lockers";
 import type { LockerResponse, LockerStatus } from "@/lib/schemas/lockers";
 
 const LockerDetailsPage = async ({
@@ -20,8 +23,8 @@ const LockerDetailsPage = async ({
 
   try {
     const [lockerData, statusesData] = await Promise.all([
-      lockersApi.getLockerById(lockerId),
-      lockersApi.getLockerStatuses(),
+      getLockerByIdAction(lockerId),
+      getLockerStatusesAction(),
     ]);
 
     locker = lockerData;

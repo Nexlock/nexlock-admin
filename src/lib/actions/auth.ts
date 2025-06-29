@@ -22,7 +22,7 @@ export async function loginAction(data: LoginRequest) {
 
     // Make API request to your server
     const response = await fetch(
-      `${API_CONFIG.baseUrl}${API_CONFIG.endpoints.auth.login}`,
+      `${API_CONFIG.baseUrl}/api/v1/admin/auth/login`,
       {
         method: "POST",
         headers: {
@@ -94,7 +94,7 @@ export async function registerAction(data: RegisterAdminRequest) {
 
     // Make API request to your server
     const response = await fetch(
-      `${API_CONFIG.baseUrl}${API_CONFIG.endpoints.auth.register}`,
+      `${API_CONFIG.baseUrl}/api/v1/admin/auth/register`,
       {
         method: "POST",
         headers: {

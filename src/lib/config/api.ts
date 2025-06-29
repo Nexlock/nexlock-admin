@@ -1,9 +1,9 @@
 export const API_CONFIG = {
-  baseUrl: process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000",
+  baseUrl: process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001",
   endpoints: {
     auth: {
-      login: "/api/v1/admin/login",
-      register: "/api/v1/admin/register",
+      login: "/api/v1/admin/auth/login",
+      register: "/api/v1/admin/auth/register",
     },
     modules: {
       list: "/api/v1/admin/modules",

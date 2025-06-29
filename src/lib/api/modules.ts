@@ -2,18 +2,23 @@ import { apiClient } from "./client";
 import type { ModuleResponse } from "../schemas/modules";
 
 export const modulesApi = {
-  async getModules(): Promise<ModuleResponse[]> {
-    return apiClient.get<ModuleResponse[]>("/api/v1/admin/modules");
+  getModules(token?: string): Promise<ModuleResponse[]> {
+    return apiClient.get<ModuleResponse[]>("/api/v1/admin/modules", token);
   },
 
-  async getModuleById(id: string): Promise<ModuleResponse> {
-    return apiClient.get<ModuleResponse>(`/api/v1/admin/modules/${id}`);
+  getModuleById(id: string, token?: string): Promise<ModuleResponse> {
+    return apiClient.get<ModuleResponse>(`/api/v1/admin/modules/${id}`, token);
   },
 
-  async updateModule(
+  updateModule(
     id: string,
-    data: { name?: string; description?: string; location?: string }
+    data: { name?: string; description?: string; location?: string },
+    token?: string
   ): Promise<ModuleResponse> {
-    return apiClient.put<ModuleResponse>(`/api/v1/admin/modules/${id}`, data);
+    return apiClient.put<ModuleResponse>(
+      `/api/v1/admin/modules/${id}`,
+      data,
+      token
+    );
   },
 };

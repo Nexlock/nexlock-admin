@@ -4,8 +4,12 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { LockersPageClient } from "@/components/lockers/LockersPageClient";
 import { ArrowLeft, AlertCircle } from "lucide-react";
 import Link from "next/link";
-import { lockersApi } from "@/lib/api/lockers";
-import { modulesApi } from "@/lib/api/modules";
+import {
+  getLockersByModuleAction,
+  getLockerStatusesAction,
+  getLockerStatsAction,
+} from "@/lib/actions/lockers";
+import { getModuleByIdAction } from "@/lib/actions/modules";
 import type { ModuleResponse } from "@/lib/schemas/modules";
 import type {
   LockerResponse,
@@ -29,10 +33,10 @@ const LockersPage = async ({
   try {
     const [moduleData, lockersData, statusesData, statsData] =
       await Promise.all([
-        modulesApi.getModuleById(moduleId),
-        lockersApi.getLockersByModule(moduleId),
-        lockersApi.getLockerStatuses(moduleId),
-        lockersApi.getLockerStats(moduleId),
+        getModuleByIdAction(moduleId),
+        getLockersByModuleAction(moduleId),
+        getLockerStatusesAction(moduleId),
+        getLockerStatsAction(moduleId),
       ]);
 
     module = moduleData;
