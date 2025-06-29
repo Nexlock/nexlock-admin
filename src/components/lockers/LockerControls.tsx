@@ -15,7 +15,7 @@ import {
   CheckCircle2,
   Clock,
 } from "lucide-react";
-import { lockersApi } from "@/lib/api/lockers";
+import { adminUnlockAction, forceCheckoutAction } from "@/lib/actions/lockers";
 import type { LockerResponse } from "@/lib/schemas/lockers";
 
 interface LockerControlsProps {
@@ -48,7 +48,10 @@ export function LockerControls({ locker, onUpdate }: LockerControlsProps) {
 
     try {
       setLoading(true);
-      await lockersApi.adminUnlock(locker.id, {
+      setMessage(null);
+
+      console.log("Attempting admin unlock for locker:", locker.id);
+      await adminUnlockAction(locker.id, {
         lockerId: locker.id,
         reason: unlockReason,
       });
@@ -57,6 +60,7 @@ export function LockerControls({ locker, onUpdate }: LockerControlsProps) {
       setUnlockReason("");
       onUpdate?.();
     } catch (error) {
+      console.error("Admin unlock error:", error);
       setMessage({
         type: "error",
         text:
@@ -80,7 +84,13 @@ export function LockerControls({ locker, onUpdate }: LockerControlsProps) {
 
     try {
       setLoading(true);
-      await lockersApi.forceCheckout({
+      setMessage(null);
+
+      console.log(
+        "Attempting force checkout for rental:",
+        locker.currentRental.id
+      );
+      await forceCheckoutAction({
         rentalId: locker.currentRental.id,
         reason: checkoutReason,
       });
@@ -89,6 +99,7 @@ export function LockerControls({ locker, onUpdate }: LockerControlsProps) {
       setCheckoutReason("");
       onUpdate?.();
     } catch (error) {
+      console.error("Force checkout error:", error);
       setMessage({
         type: "error",
         text:

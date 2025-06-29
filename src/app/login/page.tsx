@@ -26,7 +26,7 @@ export default function LoginPage() {
       const result = await loginAction(data);
 
       if (result.success) {
-        router.push("/dashboard");
+        router.push("/");
       } else {
         setError(result.error || "Login failed");
       }

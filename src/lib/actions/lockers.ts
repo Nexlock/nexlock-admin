@@ -17,16 +17,19 @@ async function makeAuthenticatedRequest<T>(
   const cookieStore = await cookies();
   const token = cookieStore.get(AUTH_COOKIE_NAME)?.value;
 
+  if (!token) {
+    throw new Error("Authentication token not found");
+  }
+
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
     ...(options.headers as Record<string, string>),
   };
 
-  if (token) {
-    headers.Authorization = `Bearer ${token}`;
-  }
+  headers.Authorization = `Bearer ${token}`;
 
   console.log(`Making request to: ${API_CONFIG.baseUrl}${endpoint}`);
+  console.log(`Token present: ${!!token}`);
 
   const response = await fetch(`${API_CONFIG.baseUrl}${endpoint}`, {
     ...options,
@@ -45,14 +48,7 @@ async function makeAuthenticatedRequest<T>(
     throw new Error(`API Error: ${response.status} ${response.statusText}`);
   }
 
-  const data = await response.json();
-
-  // Transform date strings to Date objects
-  if (Array.isArray(data)) {
-    return data.map(transformDates) as T;
-  } else {
-    return transformDates(data) as T;
-  }
+  return response.json();
 }
 
 function transformDates(obj: any): any {
@@ -90,17 +86,19 @@ function transformDates(obj: any): any {
 export async function getLockersByModuleAction(
   moduleId: string
 ): Promise<LockerResponse[]> {
-  return makeAuthenticatedRequest<LockerResponse[]>(
+  const data = await makeAuthenticatedRequest<LockerResponse[]>(
     `/api/v1/admin/modules/${moduleId}/lockers`
   );
+  return Array.isArray(data) ? data.map(transformDates) : [];
 }
 
 export async function getLockerByIdAction(
   lockerId: string
 ): Promise<LockerResponse> {
-  return makeAuthenticatedRequest<LockerResponse>(
+  const data = await makeAuthenticatedRequest<LockerResponse>(
     `/api/v1/admin/lockers/${lockerId}`
   );
+  return transformDates(data);
 }
 
 export async function getLockerStatusesAction(
@@ -109,7 +107,8 @@ export async function getLockerStatusesAction(
   const endpoint = moduleId
     ? `/api/v1/admin/lockers/status?moduleId=${moduleId}`
     : `/api/v1/admin/lockers/status`;
-  return makeAuthenticatedRequest<LockerStatus[]>(endpoint);
+  const data = await makeAuthenticatedRequest<LockerStatus[]>(endpoint);
+  return Array.isArray(data) ? data.map(transformDates) : [];
 }
 
 export async function getLockerStatsAction(
@@ -125,6 +124,7 @@ export async function adminUnlockAction(
   lockerId: string,
   data: AdminUnlockRequest
 ): Promise<{ success: boolean }> {
+  console.log(`Admin unlock request for locker: ${lockerId}`, data);
   return makeAuthenticatedRequest<{ success: boolean }>(
     `/api/v1/admin/lockers/${lockerId}/unlock`,
     {
@@ -137,6 +137,7 @@ export async function adminUnlockAction(
 export async function forceCheckoutAction(
   data: ForceCheckoutRequest
 ): Promise<{ success: boolean }> {
+  console.log(`Force checkout request:`, data);
   return makeAuthenticatedRequest<{ success: boolean }>(
     `/api/v1/admin/rentals/force-checkout`,
     {
@@ -149,7 +150,8 @@ export async function forceCheckoutAction(
 export async function getRentalHistoryAction(
   lockerId: string
 ): Promise<LockerResponse["rentals"]> {
-  return makeAuthenticatedRequest<LockerResponse["rentals"]>(
+  const data = await makeAuthenticatedRequest<LockerResponse["rentals"]>(
     `/api/v1/admin/lockers/${lockerId}/rentals`
   );
+  return Array.isArray(data) ? data.map(transformDates) : [];
 }

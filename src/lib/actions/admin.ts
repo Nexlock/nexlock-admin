@@ -27,6 +27,11 @@ async function makeAuthenticatedRequest<T>(
   });
 
   if (!response.ok) {
+    const errorText = await response.text();
+    console.error(
+      `API Error: ${response.status} ${response.statusText}`,
+      errorText
+    );
     throw new Error(`API Error: ${response.status} ${response.statusText}`);
   }
 
