@@ -1,13 +1,10 @@
-"use client";
-
-import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { ModuleInfoCard } from "@/components/modules/ModuleInfoCard";
-import { LoadingSpinner } from "@/components/modules/LoadingSpinner";
+import { ModulePageClient } from "@/components/modules/ModulePageClient";
 import {
   ArrowLeft,
   Lock,
@@ -18,7 +15,6 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { modulesApi } from "@/lib/api/modules";
-import type { ModuleResponse } from "@/lib/schemas/modules";
 
 const ModuleInfoPage = async ({
   params,
@@ -26,54 +22,26 @@ const ModuleInfoPage = async ({
   params: Promise<{ moduleId: string }>;
 }) => {
   const { moduleId } = await params;
-  const router = useRouter();
-  const [module, setModule] = useState<ModuleResponse | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
-  const fetchModule = async () => {
-    try {
-      setError(null);
-      const data = await modulesApi.getModuleById(moduleId);
-      setModule(data);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to fetch module");
-    } finally {
-      setLoading(false);
-    }
-  };
+  let module;
+  let error = null;
 
-  useEffect(() => {
-    fetchModule();
-  }, [moduleId]);
-
-  const handleModuleUpdate = (updatedModule: ModuleResponse) => {
-    setModule(updatedModule);
-  };
-
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <div className="text-center space-y-4">
-          <LoadingSpinner size="lg" />
-          <p className="text-muted-foreground">Loading module details...</p>
-        </div>
-      </div>
-    );
+  try {
+    module = await modulesApi.getModuleById(moduleId);
+  } catch (err) {
+    error = err instanceof Error ? err.message : "Failed to fetch module";
   }
 
   if (error || !module) {
     return (
       <div className="space-y-6">
         <div className="flex items-center gap-4">
-          <Button
-            variant="ghost"
-            onClick={() => router.back()}
-            className="gap-2"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            Back
-          </Button>
+          <Link href="/module">
+            <Button variant="ghost" className="gap-2">
+              <ArrowLeft className="w-4 h-4" />
+              Back
+            </Button>
+          </Link>
         </div>
         <Alert variant="destructive">
           <AlertCircle className="h-4 w-4" />
@@ -89,14 +57,12 @@ const ModuleInfoPage = async ({
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <Button
-            variant="ghost"
-            onClick={() => router.back()}
-            className="gap-2"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            Back
-          </Button>
+          <Link href="/module">
+            <Button variant="ghost" className="gap-2">
+              <ArrowLeft className="w-4 h-4" />
+              Back
+            </Button>
+          </Link>
           <div>
             <h1 className="text-3xl font-bold tracking-tight">{module.name}</h1>
             <p className="text-muted-foreground">
@@ -120,7 +86,7 @@ const ModuleInfoPage = async ({
 
       <div className="grid gap-6 lg:grid-cols-3">
         <div className="lg:col-span-2">
-          <ModuleInfoCard module={module} onUpdate={handleModuleUpdate} />
+          <ModulePageClient module={module} />
         </div>
 
         <div className="space-y-6">
