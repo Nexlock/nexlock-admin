@@ -38,7 +38,7 @@ const LockerDetailsPage = async ({
 
   if (error || !locker) {
     return (
-      <div className="space-y-6">
+      <div className="space-y-6 p-6">
         <div className="flex items-center gap-4">
           <Link href={`/module/${moduleId}/lockers`}>
             <Button variant="ghost" className="gap-2">

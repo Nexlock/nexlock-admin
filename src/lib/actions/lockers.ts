@@ -26,13 +26,22 @@ async function makeAuthenticatedRequest<T>(
     headers.Authorization = `Bearer ${token}`;
   }
 
+  console.log(`Making request to: ${API_CONFIG.baseUrl}${endpoint}`);
+
   const response = await fetch(`${API_CONFIG.baseUrl}${endpoint}`, {
     ...options,
     headers,
-    cache: "no-store", // Ensure fresh data for status checks
+    cache: "no-store",
   });
 
+  console.log(`Response status: ${response.status}`);
+
   if (!response.ok) {
+    const errorText = await response.text();
+    console.error(
+      `API Error: ${response.status} ${response.statusText}`,
+      errorText
+    );
     throw new Error(`API Error: ${response.status} ${response.statusText}`);
   }
 

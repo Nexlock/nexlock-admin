@@ -52,7 +52,7 @@ const LockersPage = async ({
 
   if (error || !module) {
     return (
-      <div className="space-y-6">
+      <div className="space-y-6 p-6">
         <div className="flex items-center gap-4">
           <Link href={`/module/${moduleId}`}>
             <Button variant="ghost" className="gap-2">

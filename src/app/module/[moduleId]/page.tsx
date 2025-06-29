@@ -34,7 +34,7 @@ const ModuleInfoPage = async ({
 
   if (error || !module) {
     return (
-      <div className="space-y-6">
+      <div className="space-y-6 p-6">
         <div className="flex items-center gap-4">
           <Link href="/module">
             <Button variant="ghost" className="gap-2">
@@ -54,7 +54,7 @@ const ModuleInfoPage = async ({
   const lockerCount = module.lockers?.length || 0;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 p-6">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <Link href="/module">
