@@ -24,14 +24,12 @@ import { lockersApi } from "@/lib/api/lockers";
 import type { LockerResponse, LockerStatus } from "@/lib/schemas/lockers";
 
 interface LockerDetailsClientProps {
-  moduleId: string;
   lockerId: string;
   locker: LockerResponse;
   initialStatus: LockerStatus | null;
 }
 
 export function LockerDetailsClient({
-  moduleId: _,
   lockerId,
   locker: initialLocker,
   initialStatus,

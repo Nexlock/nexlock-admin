@@ -57,7 +57,6 @@ const LockerDetailsPage = async ({
 
   return (
     <LockerDetailsClient
-      moduleId={moduleId}
       lockerId={lockerId}
       locker={locker}
       initialStatus={status}
