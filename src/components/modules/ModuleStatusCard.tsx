@@ -44,7 +44,7 @@ export function ModuleStatusCard({
     // Poll for status updates every 30 seconds
     const interval = setInterval(fetchStatus, 30000);
     return () => clearInterval(interval);
-  }, [moduleId, initialStatus]);
+  }, [moduleId, initialStatus, fetchStatus]);
 
   if (!status) {
     return (

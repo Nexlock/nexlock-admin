@@ -1,9 +1,5 @@
 import { apiClient } from "./client";
-import type {
-  ModuleResponse,
-  UpdateModuleRequest,
-  ModuleStatus,
-} from "../schemas/modules";
+import type { ModuleResponse, ModuleStatus } from "../schemas/modules";
 
 export const modulesApi = {
   getModules(token?: string): Promise<ModuleResponse[]> {

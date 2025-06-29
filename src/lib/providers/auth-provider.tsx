@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import { AuthUser } from "../schemas/auth";
 import { logoutAction } from "../actions/auth";
 

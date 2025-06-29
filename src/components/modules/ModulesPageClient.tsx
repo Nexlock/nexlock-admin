@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { ModuleCard } from "@/components/modules/ModuleCard";
-import { LoadingSpinner } from "@/components/modules/LoadingSpinner";
 import { Search, Plus, RefreshCw, AlertCircle } from "lucide-react";
 import { modulesApi } from "@/lib/api/modules";
 import type { ModuleResponse } from "@/lib/schemas/modules";

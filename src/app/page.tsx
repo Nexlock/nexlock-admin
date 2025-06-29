@@ -29,7 +29,7 @@ export default async function HomePage() {
         </div>
       </div>
     );
-  } catch (error) {
+  } catch {
     // If user is not authenticated, redirect to login
     redirect("/login");
   }

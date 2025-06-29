@@ -31,7 +31,7 @@ interface LockerDetailsClientProps {
 }
 
 export function LockerDetailsClient({
-  moduleId,
+  moduleId: _,
   lockerId,
   locker: initialLocker,
   initialStatus,

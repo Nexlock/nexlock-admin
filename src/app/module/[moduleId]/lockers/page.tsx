@@ -24,14 +24,14 @@ const LockersPage = async ({
 }) => {
   const { moduleId } = await params;
 
-  let module: ModuleResponse | undefined;
+  let moduleData: ModuleResponse | undefined;
   let lockers: LockerResponse[];
   let statuses: LockerStatus[];
   let stats: LockerStats | null;
   let error: string | null = null;
 
   try {
-    const [moduleData, lockersData, statusesData, statsData] =
+    const [moduleResult, lockersData, statusesData, statsData] =
       await Promise.all([
         getModuleByIdAction(moduleId),
         getLockersByModuleAction(moduleId),
@@ -39,7 +39,7 @@ const LockersPage = async ({
         getLockerStatsAction(moduleId),
       ]);
 
-    module = moduleData;
+    moduleData = moduleResult;
     lockers = lockersData;
     statuses = statusesData;
     stats = statsData;
@@ -50,7 +50,7 @@ const LockersPage = async ({
     stats = null;
   }
 
-  if (error || !module) {
+  if (error || !moduleData) {
     return (
       <div className="space-y-6 p-6">
         <div className="flex items-center gap-4">
@@ -72,7 +72,7 @@ const LockersPage = async ({
   return (
     <LockersPageClient
       moduleId={moduleId}
-      module={module}
+      module={moduleData}
       initialLockers={lockers}
       initialStatuses={statuses}
       initialStats={stats}

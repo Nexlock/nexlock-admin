@@ -97,7 +97,6 @@ export function RentalHistory({ rentals, loading }: RentalHistoryProps) {
         <div className="space-y-4">
           {rentals.map((rental) => {
             const isActive = new Date() < new Date(rental.expiresAt);
-            const isExpired = !isActive;
 
             return (
               <div

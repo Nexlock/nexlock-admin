@@ -1,13 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import {
-  Package,
-  Settings,
-  BarChart3,
-  Users,
-  ArrowRight,
-  Plus,
-} from "lucide-react";
+import { Package, Settings, BarChart3, Users, ArrowRight } from "lucide-react";
 import Link from "next/link";
 
 export function QuickActions() {

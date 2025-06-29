@@ -31,7 +31,10 @@ export default function LoginPage() {
         setError(result.error || "Login failed");
       }
     } catch (err) {
-      setError("An unexpected error occurred");
+      setError(
+        "An unexpected error occurred: " +
+          (err instanceof Error ? err.message : "Unknown error")
+      );
     } finally {
       setIsLoading(false);
     }

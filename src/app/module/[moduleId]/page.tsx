@@ -3,7 +3,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { ModuleInfoCard } from "@/components/modules/ModuleInfoCard";
 import { ModulePageClient } from "@/components/modules/ModulePageClient";
 import {
   ArrowLeft,
@@ -23,16 +22,16 @@ const ModuleInfoPage = async ({
 }) => {
   const { moduleId } = await params;
 
-  let module;
+  let moduleData;
   let error = null;
 
   try {
-    module = await getModuleByIdAction(moduleId);
+    moduleData = await getModuleByIdAction(moduleId);
   } catch (err) {
     error = err instanceof Error ? err.message : "Failed to fetch module";
   }
 
-  if (error || !module) {
+  if (error || !moduleData) {
     return (
       <div className="space-y-6 p-6">
         <div className="flex items-center gap-4">
@@ -51,7 +50,7 @@ const ModuleInfoPage = async ({
     );
   }
 
-  const lockerCount = module.lockers?.length || 0;
+  const lockerCount = moduleData.lockers?.length || 0;
 
   return (
     <div className="space-y-6 p-6">
@@ -64,9 +63,11 @@ const ModuleInfoPage = async ({
             </Button>
           </Link>
           <div>
-            <h1 className="text-3xl font-bold tracking-tight">{module.name}</h1>
+            <h1 className="text-3xl font-bold tracking-tight">
+              {moduleData.name}
+            </h1>
             <p className="text-muted-foreground">
-              Module ID: {module.deviceId}
+              Module ID: {moduleData.deviceId}
             </p>
           </div>
         </div>
@@ -86,7 +87,7 @@ const ModuleInfoPage = async ({
 
       <div className="grid gap-6 lg:grid-cols-3">
         <div className="lg:col-span-2">
-          <ModulePageClient module={module} />
+          <ModulePageClient module={moduleData} />
         </div>
 
         <div className="space-y-6">

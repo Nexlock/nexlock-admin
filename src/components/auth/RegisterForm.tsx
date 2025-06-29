@@ -65,7 +65,7 @@ export function RegisterForm({
   }, [initialRegistrationCode, form]);
 
   const handleSubmit = (data: RegisterFormData) => {
-    const { confirmPassword, ...registerData } = data;
+    const { ...registerData } = data;
     onSubmit(registerData);
   };
 

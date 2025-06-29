@@ -8,7 +8,6 @@ import {
   Clock,
   AlertTriangle,
   Settings,
-  ArrowRight,
 } from "lucide-react";
 import Link from "next/link";
 import type { LockerResponse, LockerStatus } from "@/lib/schemas/lockers";

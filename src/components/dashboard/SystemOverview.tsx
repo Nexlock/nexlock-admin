@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Activity, Wifi, WifiOff, Package, Lock, Users } from "lucide-react";
+import { Activity, Wifi, Package, Lock, Users } from "lucide-react";
 
 export function SystemOverview() {
   // This would typically come from props or API data
